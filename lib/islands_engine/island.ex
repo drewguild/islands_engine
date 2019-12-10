@@ -9,14 +9,19 @@ defmodule IslandsEngine.Island do
 
         %Island{coordinates: MapSet.new(coords), hit_coordinates: MapSet.new()}
     end
-    # def new do
-    #     %Island{coordinates: MapSet.new(), hit_coordinates: MapSet.new()}
-    # end
 
     defp coordinates(type, {row, col}) do 
-        Enum.map([{0, 0}, {0, 1}, {1, 0}, {1, 1}], fn {row_offset, col_offset} ->
+        Enum.map(offsets(type), fn {row_offset, col_offset} ->
             {:ok, coordinate} = IslandsEngine.Coordinate.new(row + row_offset, col + col_offset)
             coordinate
         end)
+    end
+
+    defp offsets(:square) do
+        [{0, 0}, {0, 1}, {1, 0}, {1, 1}]
+    end
+
+    defp offsets(:atoll) do 
+       [{0, 0}, {0, 1}, {1, 1}, {2, 0}, {2, 1}]
     end
 end
